@@ -1,0 +1,37 @@
+CREATE DATABASE `code-test-db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
+
+-- `code-test-db`.users definition
+
+CREATE TABLE `users` (
+  `Id` bigint NOT NULL AUTO_INCREMENT,
+  `Name` varchar(100) DEFAULT NULL,
+  `UserName` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `IsPrivate` tinyint(1) NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- `code-test-db`.posts definition
+
+CREATE TABLE `posts` (
+  `Id` bigint NOT NULL AUTO_INCREMENT,
+  `Content` longtext,
+  `UserId` bigint NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `posts_FK` (`UserId`),
+  CONSTRAINT `posts_FK` FOREIGN KEY (`UserId`) REFERENCES `users` (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- `code-test-db`.followers definition
+
+CREATE TABLE `followers` (
+  `UserId` bigint NOT NULL,
+  `FollowingUserId` bigint NOT NULL,
+  PRIMARY KEY (`UserId`,`FollowingUserId`),
+  KEY `followers_FK_1` (`FollowingUserId`),
+  CONSTRAINT `followers_FK` FOREIGN KEY (`UserId`) REFERENCES `users` (`Id`),
+  CONSTRAINT `followers_FK_1` FOREIGN KEY (`FollowingUserId`) REFERENCES `users` (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
