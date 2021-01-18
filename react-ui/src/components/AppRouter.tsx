@@ -49,7 +49,7 @@ export function AppRouter() {
         </span>
 
         <span>
-          <Link to={`profile/${userName}`}>Profile</Link> ||
+          <Link to={`/profile/${userName}`}>Profile</Link> ||
         </span>
 
         <span>
