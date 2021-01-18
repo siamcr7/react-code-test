@@ -18,10 +18,11 @@ CREATE TABLE `posts` (
   `Id` bigint NOT NULL AUTO_INCREMENT,
   `Content` longtext,
   `UserId` bigint NOT NULL,
+  `CreatedTimeStamp` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`Id`),
   KEY `posts_FK` (`UserId`),
   CONSTRAINT `posts_FK` FOREIGN KEY (`UserId`) REFERENCES `users` (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 -- `code-test-db`.followers definition

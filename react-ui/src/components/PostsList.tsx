@@ -38,6 +38,7 @@ export function PostList(props: {
               <th>Post Id</th>
               <th>Content</th>
               <th>User Id</th>
+              <th>Time</th>
               {
                 props.canEdit === true ?
                 <th>Update Status</th>
@@ -65,6 +66,13 @@ export function PostList(props: {
                       }
                     </td>
                     <td>{post.userId}</td>
+                    <td>
+                      {
+                        post.createdTimeStamp === null
+                        ? ``
+                        : new Date(post.createdTimeStamp as string).toLocaleString()
+                      }
+                    </td>
                     {
                       props.canEdit === true && post.isEditingState !== true ?
                         <td>
