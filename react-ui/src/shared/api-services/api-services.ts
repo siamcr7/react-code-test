@@ -72,3 +72,9 @@ export function deleteFollower$(userId: number, followingUserId: number) {
     tap(_ => console.log('deleted follower'))
   );
 }
+
+export function deletePost$(id: number) {
+  return httpDelete$<number[]>(`${API_BASE}/posts/${id}`).pipe(
+    tap(_ => console.log('deleted post'))
+  );
+}

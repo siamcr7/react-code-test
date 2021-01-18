@@ -32,7 +32,7 @@ export function Homepage(props: {id: number | null}) {
       </div>
 
       <h2>Following Users Posts</h2>
-      <PostList posts={posts}></PostList>
+      <PostList posts={posts} deletePost={() => {}}></PostList>
 
     </React.Fragment>
   );

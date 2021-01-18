@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom";
 import { forkJoin } from "rxjs";
 import { filter, mergeMap, tap } from "rxjs/operators";
-import { getFollowerUserIdsByUserId$, getFollowingUserIdsByUserId$, getPosts$, getUserByUserName$ } from "../shared/api-services/api-services";
+import { deletePost$, getFollowerUserIdsByUserId$, getFollowingUserIdsByUserId$, getPosts$, getUserByUserName$ } from "../shared/api-services/api-services";
 import { Post } from "../shared/interfaces/models/post";
 import { PostList } from "./PostsList";
 
@@ -29,7 +29,7 @@ export function Profile(props: {
       getFollowerUserIdsByUserId$(props.id as number).subscribe((res) => setFollowersCount(res.length));
       getFollowingUserIdsByUserId$(props.id as number).subscribe((res) => setFollowingCount(res.length));
     } else {
-
+      // not logged in
       getUserByUserName$(username).pipe(
         filter(user => user.isPrivate !== 1),
         mergeMap(user => {
@@ -70,7 +70,13 @@ export function Profile(props: {
       <h1>Followers: {followersCount}</h1>
       <h1>Followings: {followingCount}</h1>
       <h1>User Tweets</h1>
-      <PostList posts={posts}></PostList>
+      <PostList posts={posts} canEdit={true} deletePost={(postId) => {
+        deletePost$(postId).pipe(
+          mergeMap(_ => getPosts$(props.id as number, true))
+        ).subscribe(res => {
+          setPosts(res);
+        });
+      }}></PostList>
     </React.Fragment>
   )
 }
