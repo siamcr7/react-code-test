@@ -95,7 +95,7 @@ export function AppRouter() {
         </Route>
 
         <Route path="/profile/:username">
-          <Profile id={id} isPrivate={isPrivate === 1 ? true : false} toggle={(isPrivate) => updateProfileVisibility(isPrivate)}></Profile>
+          <Profile id={id} isPrivate={isPrivate !== 1 ? false : true} toggle={(isPrivate) => updateProfileVisibility(isPrivate)}></Profile>
         </Route>
 
         <Route path="/login">

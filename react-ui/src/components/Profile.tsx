@@ -1,8 +1,8 @@
 import React from "react";
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom";
-import { forkJoin } from "rxjs";
-import { filter, mergeMap } from "rxjs/operators";
+import { forkJoin, of } from "rxjs";
+import { mergeMap } from "rxjs/operators";
 import { deletePost$, getFollowerUserIdsByUserId$, getFollowingUserIdsByUserId$, getPosts$, getUserByUserName$, updatePost$ } from "../shared/api-services/api-services";
 import { Post } from "../shared/interfaces/models/post";
 import { PostList } from "./PostsList";
@@ -31,8 +31,11 @@ export function Profile(props: {
     } else {
       // not logged in
       getUserByUserName$(username).pipe(
-        filter(user => user.isPrivate !== 1),
         mergeMap(user => {
+          // reset state
+          if (user.isPrivate === 1) {
+            return of([[], [], []]);
+          }
           const userId = user.id;
           const apiCalls$ = forkJoin([
             getPosts$(userId, true),
@@ -49,7 +52,7 @@ export function Profile(props: {
       });
     }
 
-  }, []);
+  }, [props.id, username]);
 
   return (
     <React.Fragment>
