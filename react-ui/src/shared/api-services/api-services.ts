@@ -22,6 +22,12 @@ export function updateProfileVisibility$(payload: { isPrivate: boolean, userId: 
   );
 }
 
+export function updatePost$(payload: { id: number, content: string }) {
+  return httpPut$<{}, { id: number, content: string }>(`${API_BASE}/posts`, payload).pipe(
+    tap(_ => console.log('updated profile visibility'))
+  );
+}
+
 export function getPosts$(userId: number, onlySelf: boolean) {
   return httpGet$<Post[]>(`${API_BASE}/posts/${userId}/${onlySelf}`).pipe(
     tap(_ => console.log('got posts', _.length))

@@ -2,8 +2,8 @@ import React from "react";
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom";
 import { forkJoin } from "rxjs";
-import { filter, mergeMap, tap } from "rxjs/operators";
-import { deletePost$, getFollowerUserIdsByUserId$, getFollowingUserIdsByUserId$, getPosts$, getUserByUserName$ } from "../shared/api-services/api-services";
+import { filter, mergeMap } from "rxjs/operators";
+import { deletePost$, getFollowerUserIdsByUserId$, getFollowingUserIdsByUserId$, getPosts$, getUserByUserName$, updatePost$ } from "../shared/api-services/api-services";
 import { Post } from "../shared/interfaces/models/post";
 import { PostList } from "./PostsList";
 
@@ -43,7 +43,6 @@ export function Profile(props: {
           return apiCalls$;
         })
       ).subscribe(res => {
-        console.log('See Res: ',res);
         setPosts(res[0]);
         setFollowersCount(res[1].length);
         setFollowingCount(res[2].length);
@@ -70,13 +69,23 @@ export function Profile(props: {
       <h1>Followers: {followersCount}</h1>
       <h1>Followings: {followingCount}</h1>
       <h1>User Tweets</h1>
-      <PostList posts={posts} canEdit={true} deletePost={(postId) => {
-        deletePost$(postId).pipe(
-          mergeMap(_ => getPosts$(props.id as number, true))
-        ).subscribe(res => {
-          setPosts(res);
-        });
-      }}></PostList>
+      <PostList
+        posts={posts}
+        canEdit={true}
+        deletePost={(postId) => {
+          deletePost$(postId).pipe(
+            mergeMap(_ => getPosts$(props.id as number, true))
+          ).subscribe(res => {
+            setPosts(res);
+          });
+        }}
+        saveEditPost={(postId: number, content: string) => {
+          updatePost$({ id: postId, content }).pipe(
+            mergeMap(_ => getPosts$(props.id as number, true))
+          ).subscribe(res => {
+            setPosts(res);
+          });
+        }}></PostList>
     </React.Fragment>
   )
 }

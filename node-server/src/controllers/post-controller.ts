@@ -22,6 +22,19 @@ export class PostController extends ControllerBase {
     );
   }
 
+  updatePost(req: core.Request, res: core.Response) {
+    const post = {
+      Content: req.body.content,
+    };
+
+    this.connection.query({
+        sql: "UPDATE POSTS SET ? WHERE Id = ?",
+        values: [post, req.body.id],
+      },
+      (err, rows) => this.sendResponse(err, {}, res)
+    );
+  }
+
   getPostsByUserId(userId: number, onlySelf: boolean, res: core.Response) {
     let query = `
       SELECT Id, Content, UserId
