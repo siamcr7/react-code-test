@@ -25,4 +25,17 @@ export class UserController extends ControllerBase {
       (err, rows) => this.sendResponse(err, {}, res)
     );
   }
+
+  updateVisibility(req: core.Request, res: core.Response) {
+    const user  = {
+      IsPrivate: req.body.isPrivate
+    };
+
+    this.connection.query({
+        sql: "UPDATE USERS SET ? WHERE Id = ?",
+        values: [user, req.body.userId],
+      },
+      (err, rows) => this.sendResponse(err, {}, res)
+    );
+  }
 }

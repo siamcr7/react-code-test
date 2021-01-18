@@ -1,5 +1,7 @@
+import { AppRouter } from "./components/AppRouter";
+
 export function App() {
   return (
-    <h1>Hello from react!</h1>
+    <AppRouter></AppRouter>
   );
 }
