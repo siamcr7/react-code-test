@@ -11,6 +11,9 @@ export function Homepage(props: {id: number | null}) {
       alert('Tweet len min: 0, max: 120');
       return;
     }
+    if (inpRef.current !== null) {
+      inpRef.current.value = '';
+    }
     postPost$({ content, userId: props.id as number}).subscribe();
   };
 
@@ -21,7 +24,7 @@ export function Homepage(props: {id: number | null}) {
       setPosts(res);
     });
 
-  }, []);
+  }, [props.id]);
 
   return (
     <React.Fragment>
