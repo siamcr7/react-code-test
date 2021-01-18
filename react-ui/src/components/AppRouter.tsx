@@ -15,6 +15,12 @@ export function AppRouter() {
   const [isPrivate, setIsPrivate] = useState(null as 1 | 0 | null);
   // const [id, setId] = useState(2);
 
+  const resetState = () => {
+    setId(null);
+    setUserName(null);
+    setIsPrivate(null);
+  }
+
   const doLogin = (userName: string) => {
     if (userName === null || userName === undefined || userName.trim().length === 0) {
       return;
@@ -62,7 +68,7 @@ export function AppRouter() {
             <span>
               <Link to="/login">Login</Link>
             </span>
-            : '' 
+            : <button onClick={() => resetState()}>Logout</button>
         }
 
       </div>
