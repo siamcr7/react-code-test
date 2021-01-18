@@ -74,7 +74,7 @@ export function Profile(props: {
       <h1>User Tweets</h1>
       <PostList
         posts={posts}
-        canEdit={true}
+        canEdit={props.id !== null}
         deletePost={(postId) => {
           deletePost$(postId).pipe(
             mergeMap(_ => getPosts$(props.id as number, true))
