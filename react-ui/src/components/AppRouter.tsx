@@ -22,7 +22,6 @@ export function AppRouter() {
 
     getUserByUserName$(userName).pipe(
     ).subscribe(user => {
-      console.log('See User: ', user);
       setUserName(userName);
       setId(user.id);
       setIsPrivate(user.isPrivate);
