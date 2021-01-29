@@ -32,6 +32,10 @@ export class Router {
       postController.addPost(req, res);
     });
 
+    this.router.put('/posts', (req, res) => {
+      postController.updatePost(req, res);
+    });
+
     this.router.get('/posts/:userId/:onlySelf', (req, res) => {
       postController.getPostsByUserId(+(req.params.userId), ((req.params.onlySelf) as string) === 'true', res);
     });

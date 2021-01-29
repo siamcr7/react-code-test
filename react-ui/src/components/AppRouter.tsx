@@ -15,6 +15,12 @@ export function AppRouter() {
   const [isPrivate, setIsPrivate] = useState(null as 1 | 0 | null);
   // const [id, setId] = useState(2);
 
+  const resetState = () => {
+    setId(null);
+    setUserName(null);
+    setIsPrivate(null);
+  }
+
   const doLogin = (userName: string) => {
     if (userName === null || userName === undefined || userName.trim().length === 0) {
       return;
@@ -22,7 +28,6 @@ export function AppRouter() {
 
     getUserByUserName$(userName).pipe(
     ).subscribe(user => {
-      console.log('See User: ', user);
       setUserName(userName);
       setId(user.id);
       setIsPrivate(user.isPrivate);
@@ -50,7 +55,7 @@ export function AppRouter() {
         </span>
 
         <span>
-          <Link to={`profile/${userName}`}>Profile</Link> ||
+          <Link to={`/profile/${userName}`}>Profile</Link> ||
         </span>
 
         <span>
@@ -63,7 +68,7 @@ export function AppRouter() {
             <span>
               <Link to="/login">Login</Link>
             </span>
-            : '' 
+            : <button onClick={() => resetState()}>Logout</button>
         }
 
       </div>
@@ -90,7 +95,7 @@ export function AppRouter() {
         </Route>
 
         <Route path="/profile/:username">
-          <Profile id={id} isPrivate={isPrivate === 1 ? true : false} toggle={(isPrivate) => updateProfileVisibility(isPrivate)}></Profile>
+          <Profile id={id} isPrivate={isPrivate !== 1 ? false : true} toggle={(isPrivate) => updateProfileVisibility(isPrivate)}></Profile>
         </Route>
 
         <Route path="/login">

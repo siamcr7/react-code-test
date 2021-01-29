@@ -2,6 +2,7 @@ import { ControllerBase } from "./controller-base";
 import * as core from "express-serve-static-core";
 import { Connection } from "mysql";
 import { Post } from "../models/post";
+import moment from "moment";
 
 export class PostController extends ControllerBase {
   constructor(protected connection: Connection) {
@@ -12,6 +13,7 @@ export class PostController extends ControllerBase {
     const post: Post = {
       Content: req.body.content,
       UserId: req.body.userId,
+      CreatedTimeStamp: moment().utc().toString()
     };
 
     this.connection.query({
@@ -22,10 +24,23 @@ export class PostController extends ControllerBase {
     );
   }
 
+  updatePost(req: core.Request, res: core.Response) {
+    const post = {
+      Content: req.body.content,
+    };
+
+    this.connection.query({
+        sql: "UPDATE POSTS SET ? WHERE Id = ?",
+        values: [post, req.body.id],
+      },
+      (err, rows) => this.sendResponse(err, {}, res)
+    );
+  }
+
   getPostsByUserId(userId: number, onlySelf: boolean, res: core.Response) {
     let query = `
-      SELECT Id, Content, UserId
-      FROM Posts p 
+      SELECT Id, Content, UserId, CreatedTimeStamp
+      FROM Posts p
     `;
 
     if (onlySelf === true) {
@@ -39,6 +54,10 @@ export class PostController extends ControllerBase {
         )
       `;
     }
+
+    query += `
+      ORDER BY p.CreatedTimeStamp DESC
+    `
 
     this.connection.query({
       sql: query,
